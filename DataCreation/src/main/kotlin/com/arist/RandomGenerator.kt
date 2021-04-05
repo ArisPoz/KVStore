@@ -26,4 +26,4 @@ private fun generateRandomString(maxStringLength: Int): String {
 }
 
 private fun generateRandomNumber() =
-    (1..100).random()
+    (1..1000).random()

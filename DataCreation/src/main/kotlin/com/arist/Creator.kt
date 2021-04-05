@@ -29,6 +29,7 @@ class Creator : Runnable {
     @Option(names = ["-n"], description = ["Number of lines that we would like to generate"])
     private var numLines = 1000
 
+    private val outputFile = "dataToIndex.txt"
     override fun run() {
         val types = parse(keyFile)
         val list = ArrayList<String>()
@@ -39,12 +40,12 @@ class Creator : Runnable {
             list.add(generate(it, maxKeysNum, maxNestingLevel, values))
         }
 
-        File("dataToIndex.txt").bufferedWriter().use { out ->
+        File(outputFile).bufferedWriter().use { out ->
             list.forEach {
                 out.write("$it\n")
             }
         }
         println("Random data creation... ends!")
-        println("File dataToIndex.txt has been created.")
+        println("File $outputFile has been created.")
     }
 }

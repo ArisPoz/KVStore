@@ -22,7 +22,7 @@ fun generateComplexObject(maxKeysNum: Int, maxNestingLevel: Int, values: List<Pa
         val randomKey = (0..randomKeyNum).random()
         if (keySet.add(values[randomKey].first)) {
             if (it % 2 == 0 && maxNestingLevel > 0)
-                outputBuilder.append(generateSingleObject(values[randomKey].first, maxNestingLevel, values)).append(" ; ")
+                outputBuilder.append(generateSimpleObject(values[randomKey].first, maxNestingLevel, values)).append(" ; ")
             else
                 outputBuilder.append(generateSingePair(values[randomKey].first, values[randomKey].second)).append(" ; ")
         }
@@ -31,7 +31,7 @@ fun generateComplexObject(maxKeysNum: Int, maxNestingLevel: Int, values: List<Pa
     return outputBuilder.toString().dropLast(3)
 }
 
-fun generateSingleObject(key: String, maxNestingLevel: Int, values: List<Pair<String, Any>>): String {
+fun generateSimpleObject(key: String, maxNestingLevel: Int, values: List<Pair<String, Any>>): String {
     val outputBuilder = StringBuilder()
     val randomNesting = if (maxNestingLevel > 0) (1..maxNestingLevel).random() else 0
     val min = min(randomNesting, values.size)
@@ -44,7 +44,7 @@ fun generateSingleObject(key: String, maxNestingLevel: Int, values: List<Pair<St
 
     (randomNesting..min).forEach {
         if (it % 2 == 0) {
-            outputBuilder.append(generateSingleObject(values[it].first, randomNesting - 1, values)).append(" ; ")
+            outputBuilder.append(generateSimpleObject(values[it].first, randomNesting - 1, values)).append(" ; ")
         } else {
             outputBuilder.append(generateSingePair(values[it].first, values[it].second)).append(" ; ")
 
