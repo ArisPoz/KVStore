@@ -31,19 +31,19 @@ class Runner : Runnable {
         names = ["-i"], required = true,
         description = ["File containing available server IPs"]
     )
-    private var dataToIndex: String? = null
+    private var dataToIndex: String = String()
 
     @Option(
         names = ["-k"], required = true,
         description = ["Replication factor. The # of server having identical data"]
     )
-    private var replicationFactor: Int? = null
+    private var replicationFactor: Int = 0
 
     @Option(
         names = ["-s"], required = true,
         description = ["File containing generated data"]
     )
-    private var serverFile: String? = null
+    private var serverFile: String = String()
 
     override fun run() {
         log.info("Replication factor: $replicationFactor")
@@ -51,9 +51,9 @@ class Runner : Runnable {
         log.info("Available server IPs file: $serverFile")
 
         val ws = WSListener()
-        ws.instantiateServers(serverFile!!);
+        ws.instantiateServers(serverFile);
 
-        if (ws.getAvailableServers().size < replicationFactor!!) {
+        if (ws.getAvailableServers().size < replicationFactor) {
             log.error("Not enough available servers for replication...")
             exitProcess(1)
         }
@@ -62,7 +62,7 @@ class Runner : Runnable {
             log.info("Waiting for servers...")
             while (true) {
                 delay(2000L)
-                if (ws.getConnectedServers().size >= replicationFactor!!) break
+                if (ws.getConnectedServers().size >= replicationFactor) break
             }
         }
 
@@ -79,10 +79,7 @@ class Runner : Runnable {
             } else {
                 if (input.isNotEmpty()) {
                     ws.sendToAll(JSONObject(Message(Type.COMMAND, input)).toString())
-                    runBlocking {
-                        delay(5000L)
-                        ws.responses = mutableSetOf()
-                    }
+                    ws.responses = mutableSetOf()
                 }
             }
         }
@@ -94,12 +91,12 @@ class Runner : Runnable {
         ws.sendToAll(JSONObject(Message(Type.MESSAGE, "Broker transmitting data...")).toString())
 
         val randomServers = mutableListOf<WebSocket?>()
-        File(dataToIndex!!).readLines().forEach { line ->
+        File(dataToIndex).readLines().forEach { line ->
             while (true) {
                 val randomServer = ws.getRandomServer()
                 if (!randomServers.contains(randomServer)) {
                     randomServers.add(randomServer)
-                    if (randomServers.size == replicationFactor!!) break
+                    if (randomServers.size == replicationFactor) break
                 }
             }
 

@@ -75,9 +75,7 @@ class WSListener : WebSocketListener() {
                     log.info("$from $msg")
             }
             else -> {
-                if(responses.add(msg)) {
-                    log.info("$from $msg")
-                }
+                log.info("$from $msg")
             }
         }
     }
