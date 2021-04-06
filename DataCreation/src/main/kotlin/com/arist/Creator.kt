@@ -2,6 +2,7 @@ package com.arist
 
 import picocli.CommandLine.*
 import java.io.File
+import kotlin.system.exitProcess
 
 /**
  * @author arist
@@ -29,10 +30,14 @@ class Creator : Runnable {
     @Option(names = ["-n"], description = ["Number of lines that we would like to generate"])
     private var numLines = 1000
 
-    private val outputFile = "dataToIndex.txt"
+    private val outputFile = "../dataToIndex.txt"
     override fun run() {
         val types = parse(keyFile)
         val keyValuePairs = ArrayList<String>()
+        if (maxKeysNum < 1) {
+            println("Cannot have $maxKeysNum keys per nesting level of . All data will be generated with 0 keys...")
+            exitProcess(1)
+        }
 
         println("Random data creation... starts!")
         (1..numLines).forEach {
@@ -46,6 +51,6 @@ class Creator : Runnable {
             }
         }
         println("Random data creation... ends!")
-        println("File $outputFile has been created.")
+        println("File $outputFile has been created under the directory ${File(outputFile).canonicalPath}.")
     }
 }

@@ -16,15 +16,15 @@ fun generateKeyValuePair(lineNum: Int, maxKeysNum: Int, maxNestingLevel: Int, va
 fun generateComplexObject(maxKeysNum: Int, maxNestingLevel: Int, values: List<Pair<String, Any>>): String {
     val outputBuilder = StringBuilder()
     val keySet = HashSet<String>()
-    val randomKeyNum = min((1..maxKeysNum).random(), values.size)
+    val randomKeyNum = (1..maxKeysNum).random()
 
     (0 until randomKeyNum).forEach {
-        val randomKey = (0..randomKeyNum).random()
-        if (keySet.add(values[randomKey].first)) {
+        val randomKey = values.random()
+        if (keySet.add(randomKey.first)) {
             if (it % 2 == 0 && maxNestingLevel > 0)
-                outputBuilder.append(generateSimpleObject(values[randomKey].first, maxNestingLevel, values)).append(" ; ")
+                outputBuilder.append(generateSimpleObject(randomKey.first, maxNestingLevel, values)).append(" ; ")
             else
-                outputBuilder.append(generateSingePair(values[randomKey].first, values[randomKey].second)).append(" ; ")
+                outputBuilder.append(generateSingePair(randomKey.first, randomKey.second)).append(" ; ")
         }
     }
 

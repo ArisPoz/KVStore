@@ -107,9 +107,7 @@ data class Trie(val root: TrieNode = TrieNode(), val fin: Boolean = false) {
         val builder = StringBuilder()
         currentNode.subNodes.forEach {
             when (char) {
-                '-' -> {
-                    builder.append(" : { ").append(getSubKeys(it.value, it.key, level + 1))
-                }
+                '-' -> builder.append(" : { ").append(getSubKeys(it.value, it.key, level + 1))
                 '=' -> builder.append(" : ").append(getSubKeys(it.value, it.key, level))
                 else -> builder.append(char).append(getSubKeys(it.value, it.key, level))
             }
