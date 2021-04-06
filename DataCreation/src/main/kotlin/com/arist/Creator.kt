@@ -32,16 +32,16 @@ class Creator : Runnable {
     private val outputFile = "dataToIndex.txt"
     override fun run() {
         val types = parse(keyFile)
-        val list = ArrayList<String>()
+        val keyValuePairs = ArrayList<String>()
 
         println("Random data creation... starts!")
         (1..numLines).forEach {
-            val values = generate(types, maxStringLength)
-            list.add(generate(it, maxKeysNum, maxNestingLevel, values))
+            val values = generateTypes(types, maxStringLength)
+            keyValuePairs.add(generateKeyValuePair(it, maxKeysNum, maxNestingLevel, values))
         }
 
         File(outputFile).bufferedWriter().use { out ->
-            list.forEach {
+            keyValuePairs.forEach {
                 out.write("$it\n")
             }
         }

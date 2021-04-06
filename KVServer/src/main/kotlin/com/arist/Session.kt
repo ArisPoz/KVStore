@@ -38,7 +38,7 @@ suspend fun DefaultWebSocketServerSession.outputMessages(ip: String, port: Int) 
                 log.info("MESSAGE: $incomingMessage")
             } else if (incomingType == "COMMAND") {
                 log.info("COMMAND: $incomingMessage")
-                val pair = getCommand(trie, incomingMessage)
+                val pair = executeCommand(trie, incomingMessage)
 
                 send(
                     Frame.Text(

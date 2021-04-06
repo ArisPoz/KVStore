@@ -70,44 +70,11 @@ class Runner : Runnable {
             waitingForServersJob.join()
         }
 
-        transmit(ws)
+        transmit(ws, dataToIndex, replicationFactor)
 
         while (true) {
             val input = readLine().toString()
-            if (input.toLowerCase().contains("delete") && ws.hasUnavailableServers()) {
-                log.error("Cannot perform delete, there are some disconnected servers")
-            } else {
-                if (input.isNotEmpty()) {
-                    ws.sendToAll(JSONObject(Message(Type.COMMAND, input)).toString())
-                    ws.responses = mutableSetOf()
-                }
-            }
+            transmitCommand(input, ws)
         }
-    }
-
-    private fun transmit(ws: WSListener) {
-        log.info("transmitting...")
-
-        ws.sendToAll(JSONObject(Message(Type.MESSAGE, "Broker transmitting data...")).toString())
-
-        val randomServers = mutableListOf<WebSocket?>()
-        File(dataToIndex).readLines().forEach { line ->
-            while (true) {
-                val randomServer = ws.getRandomServer()
-                if (!randomServers.contains(randomServer)) {
-                    randomServers.add(randomServer)
-                    if (randomServers.size == replicationFactor) break
-                }
-            }
-
-            randomServers.forEach { server ->
-                server?.send(JSONObject(Message(Type.COMMAND, "${Commands.PUT} $line")).toString())
-            }
-
-            randomServers.removeAll(randomServers)
-        }
-
-        ws.sendToAll(JSONObject(Message(Type.MESSAGE, "Data transmission completed...")).toString())
-        log.info("Servers ready. Commands: [${Commands.values().joinToString { it.name }}]")
     }
 }

@@ -8,32 +8,34 @@ import org.slf4j.LoggerFactory
  */
 private val log = LoggerFactory.getLogger("Service")
 
-fun getCommand(trie: Trie, message: String): Pair<Type, String> {
+fun executeCommand(trie: Trie, message: String): Pair<Type, String> {
     try {
         val splitMessage = message.split(" ", limit = 2)
         val command = splitMessage[0]
         val data = splitMessage[1]
 
-        when {
-            command.toUpperCase() == "GET" -> {
+        return when(command.toUpperCase()) {
+            "GET" -> {
                 val pair = trie.get(data)
-                return Pair(pair.first, pair.second)
+                Pair(pair.first, pair.second)
             }
-            command.toUpperCase() == "QUERY" -> {
+            "QUERY" -> {
                 val pair = trie.query(data)
-                return Pair(pair.first, pair.second)
+                Pair(pair.first, pair.second)
             }
-            command.toUpperCase() == "DELETE" -> {
+            "DELETE" -> {
                 val pair = trie.delete(data)
-                return Pair(pair.first, pair.second)
+                Pair(pair.first, pair.second)
             }
-            command.toUpperCase() == "PUT" -> {
+            "PUT" -> {
                 val split = data.split(":", limit = 2)
                 val key = split[0].replace("\"", "").trim()
                 val value = split[1].replace(";", ",").trim()
                 calculateKeyValues(trie, key, JSONObject(value))
-                return Pair(Type.OK, Type.OK.msg)
-            }
+                Pair(Type.OK, Type.OK.msg)
+            } else ->
+                Pair(Type.ERROR, Type.ERROR.msg)
+
         }
     } catch (e: Exception) {
         log.error(e.message)

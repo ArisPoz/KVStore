@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils
  * @author arist
  */
 
-fun generate(values: List<Pair<String, String>>, maxStringLength: Int) =
+fun generateTypes(values: List<Pair<String, String>>, maxStringLength: Int) =
     values.map {
         it.first to generateRandomType(it.second, maxStringLength)
     }

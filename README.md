@@ -48,7 +48,7 @@ Generates random key-value pairs, to feed them into the servers, so we can have 
 
 `mvn clean install`
 
-`java -jar target/DataCreation.jar -i Data.txt -s Servers.txt -k 2`
+`java -jar target/DataCreation.jar -k keyFile.txt -d 3 -m 2 -l 5 -n 2000`
 
 #### CLI usage
 Options | Value | Description | Default

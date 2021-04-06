@@ -6,7 +6,7 @@ import java.lang.Integer.min
  * @author arist
  */
 
-fun generate(lineNum: Int, maxKeysNum: Int, maxNestingLevel: Int, values: List<Pair<String, Any>>): String {
+fun generateKeyValuePair(lineNum: Int, maxKeysNum: Int, maxNestingLevel: Int, values: List<Pair<String, Any>>): String {
     val outputBuilder = StringBuilder()
     outputBuilder.append("${"key$lineNum".toStringWithQuotes()} : { ")
     outputBuilder.append(generateComplexObject(maxKeysNum, maxNestingLevel, values))
@@ -16,7 +16,7 @@ fun generate(lineNum: Int, maxKeysNum: Int, maxNestingLevel: Int, values: List<P
 fun generateComplexObject(maxKeysNum: Int, maxNestingLevel: Int, values: List<Pair<String, Any>>): String {
     val outputBuilder = StringBuilder()
     val keySet = HashSet<String>()
-    val randomKeyNum = min((1 until maxKeysNum).random(), values.size)
+    val randomKeyNum = min((1..maxKeysNum).random(), values.size)
 
     (0 until randomKeyNum).forEach {
         val randomKey = (0..randomKeyNum).random()
